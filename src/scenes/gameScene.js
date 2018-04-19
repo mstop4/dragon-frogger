@@ -22,6 +22,8 @@ export class GameScene extends Phaser.Scene {
   }
 
   create() {
+    this.cameras.main.resetFX()
+
     // Background
     let bg = this.add.sprite(0, 0, 'background')
     bg.setOrigin(0,0)
@@ -90,6 +92,11 @@ export class GameScene extends Phaser.Scene {
   gameOver() {
     this.isPlayerAlive = false
     this.cameras.main.shake(500)
+
+    this.time.delayedCall(250, () => {
+      this.cameras.main.fade(250)
+    }, [], this)
+
     this.time.delayedCall(500, () => {
       this.scene.restart()
     }, [], this)
