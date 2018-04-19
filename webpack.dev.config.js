@@ -47,6 +47,9 @@ module.exports = {
     // https://webpack.js.org/plugins/hashed-module-ids-plugin
     new webpack.HashedModuleIdsPlugin(),
 
+    // https://webpack.js.org/plugins/split-chunks-plugin/
+    new webpack.optimize.SplitChunksPlugin(),
+
     // ßhttps://webpack.js.org/plugins/copy-webpack-plugin/
     new CopyWebpackPlugin([
       {
