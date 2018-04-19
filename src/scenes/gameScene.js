@@ -8,7 +8,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   init() {
-    this.playerSpeed = 1.5
+    this.playerSpeed = 2
 
     this.enemyMaxY = 280
     this.enemyMinY = 80
@@ -52,6 +52,8 @@ export class GameScene extends Phaser.Scene {
     this.player = this.add.sprite(40, this.sys.game.config.height/2, 'player')
     this.player.setScale(0.5)
     this.isPlayerAlive = true
+
+    this.isWinner = false
   }
 
   update() {
@@ -79,23 +81,27 @@ export class GameScene extends Phaser.Scene {
       // Enemy Collision
       if (Phaser.Geom.Intersects.RectangleToRectangle(this.player.getBounds(), enemy.getBounds())){
         this.gameOver()
+        this.isWinner = false
         break
       }
     }
 
     // Treasure Collision
     if (Phaser.Geom.Intersects.RectangleToRectangle(this.player.getBounds(), this.treasure.getBounds())) {
+      this.isWinner = true
       this.gameOver()
     }
   }
 
   gameOver() {
     this.isPlayerAlive = false
-    this.cameras.main.shake(500)
+    this.cameras.main.shake(500, 0.025)
 
-    this.time.delayedCall(250, () => {
-      this.cameras.main.fade(250)
-    }, [], this)
+    if (this.isWinner) {
+      this.cameras.main.fade(500, 255, 255, 255)
+    } else {
+      this.cameras.main.fade(500, 0, 0, 0)
+    }
 
     this.time.delayedCall(500, () => {
       this.scene.restart()
