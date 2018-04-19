@@ -9,12 +9,13 @@ export class GameScene extends Phaser.Scene {
 
   init() {
     this.player = null
-    this.treasure = null
-    this.enemies = null
-
     this.playerSpeed = 1.5
+
+    this.enemies = null
     this.enemyMaxY = 280
     this.enemyMinY = 80
+
+    this.treasure = null
   }
 
   preload() {
@@ -49,6 +50,9 @@ export class GameScene extends Phaser.Scene {
       }
     })
     Phaser.Actions.ScaleXY(this.enemies.getChildren(), -0.5, -0.5)
+    Phaser.Actions.Call(this.enemies.getChildren(), (enemy) => {
+      enemy.speed = Math.random() * 2 + 1
+    }, this)
   }
 
   update() {
@@ -56,6 +60,18 @@ export class GameScene extends Phaser.Scene {
     if (this.input.activePointer.isDown) {
       this.player.x += this.playerSpeed
     }
+
+    // Enemy Movement
+    let _enemies = this.enemies.getChildren()
+
+    _enemies.forEach((enemy) => {
+      enemy.y += enemy.speed
+
+      if ((enemy.y >= this.enemyMaxY && enemy.speed > 0) ||
+          (enemy.y <= this.enemyMinY && enemy.speed < 0)) {
+        enemy.speed *= -1
+      }
+    })
 
     // Treasure Collision
     if (Phaser.Geom.Intersects.RectangleToRectangle(this.player.getBounds(), this.treasure.getBounds())) {
