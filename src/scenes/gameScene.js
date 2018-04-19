@@ -1,6 +1,6 @@
-import phaser from 'phaser'
+import { Scene } from 'phaser'
 
-export class GameScene extends phaser.Scene {
+export class GameScene extends Scene {
   constructor() {
     super({
       key: 'gameScene'
@@ -12,6 +12,7 @@ export class GameScene extends phaser.Scene {
   }
 
   create() {
-    this.add.sprite(0, 0, 'background')
+    let bg = this.add.sprite(0, 0, 'background')
+    bg.setOrigin(0,0)
   }
 }
