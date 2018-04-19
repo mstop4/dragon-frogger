@@ -8,14 +8,10 @@ export class GameScene extends Phaser.Scene {
   }
 
   init() {
-    this.player = null
     this.playerSpeed = 1.5
 
-    this.enemies = null
     this.enemyMaxY = 280
     this.enemyMinY = 80
-
-    this.treasure = null
   }
 
   preload() {
@@ -29,10 +25,6 @@ export class GameScene extends Phaser.Scene {
     // Background
     let bg = this.add.sprite(0, 0, 'background')
     bg.setOrigin(0,0)
-
-    // Player
-    this.player = this.add.sprite(40, this.sys.game.config.height/2, 'player')
-    this.player.setScale(0.5)
 
     // Treasure
     this.treasure = this.add.sprite(this.sys.game.config.width - 80, this.sys.game.config.height / 2, 'treasure')
@@ -53,9 +45,18 @@ export class GameScene extends Phaser.Scene {
     Phaser.Actions.Call(this.enemies.getChildren(), (enemy) => {
       enemy.speed = Math.random() * 2 + 1
     }, this)
+
+    // Player
+    this.player = this.add.sprite(40, this.sys.game.config.height/2, 'player')
+    this.player.setScale(0.5)
+    this.isPlayerAlive = true
   }
 
   update() {
+    if (!this.isPlayerAlive) {
+      return
+    }
+
     // Player Input 
     if (this.input.activePointer.isDown) {
       this.player.x += this.playerSpeed
@@ -74,7 +75,7 @@ export class GameScene extends Phaser.Scene {
       }
 
       // Enemy Collision
-      if (Phaser.Geom.Intersects.RectangleToRectangle(this.player.getBounds(), enemy.getBounds())) {
+      if (Phaser.Geom.Intersects.RectangleToRectangle(this.player.getBounds(), enemy.getBounds())){
         this.gameOver()
         break
       }
@@ -87,6 +88,10 @@ export class GameScene extends Phaser.Scene {
   }
 
   gameOver() {
-    this.scene.restart()
+    this.isPlayerAlive = false
+    this.cameras.main.shake(500)
+    this.time.delayedCall(500, () => {
+      this.scene.restart()
+    }, [], this)
   }
 }
