@@ -10,6 +10,7 @@ export class GameScene extends Phaser.Scene {
   init() {
     this.player = null
     this.treasure = null
+    this.enemies = null
 
     this.playerSpeed = 1.5
     this.enemyMaxY = 280
@@ -35,6 +36,19 @@ export class GameScene extends Phaser.Scene {
     // Treasure
     this.treasure = this.add.sprite(this.sys.game.config.width - 80, this.sys.game.config.height / 2, 'treasure')
     this.treasure.setScale(0.6)
+
+    // Here be Dragons
+    this.enemies = this.add.group({
+      key: 'dragon',
+      repeat: 5,
+      setXY: {
+        x: 110,
+        y: 100,
+        stepX: 80,
+        stepY: 20
+      }
+    })
+    Phaser.Actions.ScaleXY(this.enemies.getChildren(), -0.5, -0.5)
   }
 
   update() {
