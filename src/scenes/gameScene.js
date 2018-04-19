@@ -61,17 +61,24 @@ export class GameScene extends Phaser.Scene {
       this.player.x += this.playerSpeed
     }
 
-    // Enemy Movement
+    // Enemy Update
     let _enemies = this.enemies.getChildren()
 
-    _enemies.forEach((enemy) => {
+    for (let enemy of _enemies) {
+      // Enemy Movement
       enemy.y += enemy.speed
 
       if ((enemy.y >= this.enemyMaxY && enemy.speed > 0) ||
           (enemy.y <= this.enemyMinY && enemy.speed < 0)) {
         enemy.speed *= -1
       }
-    })
+
+      // Enemy Collision
+      if (Phaser.Geom.Intersects.RectangleToRectangle(this.player.getBounds(), enemy.getBounds())) {
+        this.gameOver()
+        break
+      }
+    }
 
     // Treasure Collision
     if (Phaser.Geom.Intersects.RectangleToRectangle(this.player.getBounds(), this.treasure.getBounds())) {
