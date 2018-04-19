@@ -5,8 +5,13 @@ export class GameScene extends Scene {
     super({
       key: 'gameScene'
     })
+  }
 
+  init() {
     this.player = null
+    this.playerSpeed = 1.5
+    this.enemyMaxY = 280
+    this.enemyMinY = 80
   }
 
   preload() {
@@ -22,5 +27,11 @@ export class GameScene extends Scene {
 
     this.player = this.add.sprite(40, this.sys.game.config.height/2, 'player')
     this.player.setScale(0.5)
+  }
+
+  update() {
+    if (this.input.activePointer.isDown) {
+      this.player.x += this.playerSpeed
+    }
   }
 }
