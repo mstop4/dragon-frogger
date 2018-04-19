@@ -3,13 +3,13 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "build": "webpack --config webpack.prod.config.js",
-    "dev": "webpack-dev-server --config webpack.dev.config.js"
+    "build": "webpack",
+    "dev": "webpack-dev-server"
   },
   "author": "mstop4 <mstop4@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "phaser": "^3.6.0"
+    "phaser": "^3.5.1"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",

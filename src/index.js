@@ -6,7 +6,9 @@ const config = {
   width: 640,
   height: 360,
   parent: 'content',
-  scene: [ GameScene ]
+  scene: [
+    GameScene
+  ]
 }
 
 const game = new Phaser.Game(config)
