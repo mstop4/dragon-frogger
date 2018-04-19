@@ -15,26 +15,29 @@ export class GameScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image('background', 'assets/background.png')
-    this.load.image('player', 'assets/player.png')
-    this.load.image('dragon', 'assets/dragon.png')
-    this.load.image('treasure', 'assets/treasure.png')
+    this.load.image('bckBackground', 'assets/img/background.png')
+    this.load.image('sprPlayer', 'assets/img/player.png')
+    this.load.image('sprDragon', 'assets/img/dragon.png')
+    this.load.image('sprTreasure', 'assets/img/treasure.png')
+
+    this.load.audio('sndDead', ['assets/snd/dead.mp3', 'assets/snd/dead.ogg'])
+    this.load.audio('sndTreasure', ['assets/snd/treasure.mp3', 'assets/snd/treasure.ogg'])
   }
 
   create() {
     this.cameras.main.resetFX()
 
     // Background
-    let bg = this.add.sprite(0, 0, 'background')
+    let bg = this.add.sprite(0, 0, 'bckBackground')
     bg.setOrigin(0,0)
 
     // Treasure
-    this.treasure = this.add.sprite(this.sys.game.config.width - 80, this.sys.game.config.height / 2, 'treasure')
+    this.treasure = this.add.sprite(this.sys.game.config.width - 80, this.sys.game.config.height / 2, 'sprTreasure')
     this.treasure.setScale(0.6)
 
     // Here be Dragons
     this.enemies = this.add.group({
-      key: 'dragon',
+      key: 'sprDragon',
       repeat: 5,
       setXY: {
         x: 110,
@@ -49,11 +52,15 @@ export class GameScene extends Phaser.Scene {
     }, this)
 
     // Player
-    this.player = this.add.sprite(40, this.sys.game.config.height/2, 'player')
+    this.player = this.add.sprite(40, this.sys.game.config.height/2, 'sprPlayer')
     this.player.setScale(0.5)
     this.isPlayerAlive = true
 
     this.isWinner = false
+
+    // Sounds
+    this.sndDead = this.sound.add('sndDead')
+    this.sndTreasure = this.sound.add('sndTreasure')
   }
 
   update() {
@@ -99,8 +106,10 @@ export class GameScene extends Phaser.Scene {
 
     if (this.isWinner) {
       this.cameras.main.fade(500, 255, 255, 255)
+      this.sndTreasure.play()
     } else {
       this.cameras.main.fade(500, 0, 0, 0)
+      this.sndDead.play()
     }
 
     this.time.delayedCall(500, () => {
