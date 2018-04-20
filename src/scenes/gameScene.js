@@ -22,6 +22,7 @@ export class GameScene extends Phaser.Scene {
 
     this.load.audio('sndDead', ['assets/snd/dead.mp3', 'assets/snd/dead.ogg'])
     this.load.audio('sndTreasure', ['assets/snd/treasure.mp3', 'assets/snd/treasure.ogg'])
+    this.load.audio('musMain', ['assets/snd/TemptationMarch.mp3', 'assets/snd/TemptationMarch.ogg'])
   }
 
   create() {
@@ -61,6 +62,11 @@ export class GameScene extends Phaser.Scene {
     // Sounds
     this.sndDead = this.sound.add('sndDead')
     this.sndTreasure = this.sound.add('sndTreasure')
+
+    if (this.musMain === undefined) {
+      this.musMain = this.sound.add('musMain')
+      this.musMain.play('', { loop: true })
+    }
   }
 
   update() {
